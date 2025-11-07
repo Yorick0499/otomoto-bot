@@ -1,50 +1,69 @@
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+import asyncio
+from playwright.async_api import async_playwright, Playwright
+import numpy as np
 import pandas as pd
 import time
 import re
 from lang.languages import translations
 
+
 lang = "pl"
+debug = True
 
 brand = str(input(translations[lang]["user_input_brand"])).lower()
 model = str(input(translations[lang]["user_input_model"])).lower()
 
 URL = f"https://www.otomoto.pl/osobowe/{brand}/{model}/dolnoslaskie?search%5Blat%5D=51.232&search%5Blon%5D=16.907&search%5Border%5D=created_at_first%3Adesc"
 
-debug = True
+titles = []
+prices = []
+publication_dates = []
+urls = []
 
 
-while True:
-    options = Options()
-    options.binary_location = "firefox-144.0.2/firefox/firefox"
-    options.add_argument("--headless")
-    options.add_argument("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0")
-    driver = webdriver.Firefox(options=options)
-
-
-
+async def run(playwright: Playwright):
+    browser = await playwright.firefox.launch(headless=False)
+    context =  await browser.new_context(user_agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0", locale="pl-PL")
+    await context.add_init_script("""
+    Object.defineProperty(navigator, 'webdriver', {
+    get: () => undefined
+    });
+    """)
+    page = await context.new_page()
+    time.sleep(5)
     if debug:
         print(translations[lang]["enter"])
-    time.sleep(5)
-    driver.get(URL)
+    await page.goto(URL)
+    print(translations[lang]["simulating"])
+    time.sleep(np.random.uniform(2,5))
+    await page.click("#onetrust-accept-btn-handler")
+    time.sleep(np.random.uniform(1,1.5))
+    for _ in range(np.random.randint(15,30)):
+        await page.keyboard.press("ArrowDown")
+        time.sleep(np.random.uniform(0.2,1))
+    time.sleep(np.random.uniform(2,4))
+    for _ in range(np.random.randint(3,6)):
+        await page.keyboard.press("ArrowDown")
+        time.sleep(np.random.uniform(0.2,1))
+    time.sleep(np.random.uniform(3,6))
+    for _ in range(np.random.randint(10,40)):
+        await page.keyboard.press("ArrowDown")
+        time.sleep(np.random.uniform(0.2,1))
+    time.sleep(np.random.uniform(5,20))
     if debug:
-        print(translations[lang]["loading"])
-    time.sleep(7)
-    html = driver.page_source
-    if debug:
-        print(translations[lang]["parsing"])
-    soup = BeautifulSoup(html, "html.parser")
+        print(translations[lang]["fetching"])
+    html = await page.content()
+    await browser.close()
+    
+    return html
 
-
-    titles = []
-    prices = []
-    publication_dates = []
-    urls = []
-
-
-    def find_title():
+async def main():
+    async with async_playwright() as playwright:
+        html = await run(playwright)
+        return html
+    
+def find_title():
         for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
             div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
             if not div:
@@ -53,44 +72,43 @@ while True:
             a = h2.find("a")
             titles.append(a.get("aria-label"))
 
-    def find_price():
-        for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-            h3 = section.find("h3", class_="efzkujb1 ooa-3ewd90")
-            if not h3:
-                continue
-            prices.append(h3.get_text(strip=True))
+def find_price():
+    for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
+        h3 = section.find("h3", class_="efzkujb1 ooa-3ewd90")
+        if not h3:
+            continue
+        prices.append(h3.get_text(strip=True))
 
-    def publication_date():
-        for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-            div = section.find("div", class_="ooa-d3dp2q e13x2f730")
-            if not div:
-                continue
-            ul = div.find("ul", class_="ooa-1o0axny e1a9azt30")
-            p = ul.find_all("p")[1]
-            publication_dates.append(p.get_text(strip=True))
+def publication_date():
+    for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
+        div = section.find("div", class_="ooa-d3dp2q e13x2f730")
+        if not div:
+            continue
+        ul = div.find("ul", class_="ooa-1o0axny e1a9azt30")
+        p = ul.find_all("p")[1]
+        publication_dates.append(p.get_text(strip=True))
 
-    def find_url():
-        for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-            div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
-            if not div:
-                continue
-            a = div.find("a")
-            urls.append(a.get("href"))
+def find_url():
+    for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
+        div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
+        if not div:
+            continue
+        a = div.find("a")
+        urls.append(a.get("href"))
 
 
-    
+while True:
+    html = asyncio.run(main())
+    if debug:
+        print(translations[lang]["parsing"])
+    soup = BeautifulSoup(html,'html.parser')
+
     if debug:
         print(translations[lang]["extract"])
     find_title()
     find_price()
     publication_date()
     find_url()
-
-    if debug:
-        print(translations[lang]["cleanup"])
-    driver.quit()
-
-
 
     df = pd.DataFrame({
         "Title": titles,
@@ -134,5 +152,6 @@ while True:
         if debug:
             print(translations[lang]["new"])
         df.to_csv("latest_offers.csv",index=False)
-    print(translations[lang]["done"])
-    time.sleep(60)
+    else:
+        print(translations[lang]["none"])
+    time.sleep(600)
