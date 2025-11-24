@@ -23,7 +23,7 @@ Then you need to install all the required packages:
 ```bash
 pip install -r requirements.txt
 ```
-It is also necessaryto install the required browsers after installing Playwright
+It is also necessary to install the required browsers after installing Playwright
 ```bash
 playwright install
 ```
