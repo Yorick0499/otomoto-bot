@@ -10,6 +10,7 @@ from lang.languages import translations
 
 lang = "pl"
 debug = True
+extra_debug = False
 
 brand = str(input(translations[lang]["user_input_brand"])).lower()
 model = str(input(translations[lang]["user_input_model"])).lower()
@@ -64,13 +65,13 @@ async def main():
         return html
     
 def find_title():
-        for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-            div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
-            if not div:
-                continue
-            h2 = div.find("h2", class_="etydmma0 ooa-ezpr21")
-            a = h2.find("a")
-            titles.append(a.get("aria-label"))
+    for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
+        div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
+        if not div:
+            continue
+        h2 = div.find("h2", class_="etydmma0 ooa-ezpr21")
+        a = h2.find("a")
+        titles.append(a.get("aria-label"))
 
 def find_price():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
@@ -81,7 +82,7 @@ def find_price():
 
 def publication_date():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-        div = section.find("div", class_="ooa-d3dp2q e13x2f730")
+        div = section.find("section", class_="ooa-ljs66p e1fi2t0p0")
         if not div:
             continue
         ul = div.find("ul", class_="ooa-1o0axny e1a9azt30")
@@ -109,6 +110,8 @@ while True:
     find_price()
     publication_date()
     find_url()
+    if extra_debug:
+        print(len(titles), len(prices), len(publication_dates), len(urls))
 
     df = pd.DataFrame({
         "Title": titles,
