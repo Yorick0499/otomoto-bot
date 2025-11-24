@@ -25,7 +25,7 @@ urls = []
 
 async def run(playwright: Playwright):
     browser = await playwright.firefox.launch(headless=False)
-    context =  await browser.new_context(user_agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0", locale="pl-PL")
+    context =  await browser.new_context(user_agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0", locale="pl-PL")
     await context.add_init_script("""
     Object.defineProperty(navigator, 'webdriver', {
     get: () => undefined
