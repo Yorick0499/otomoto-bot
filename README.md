@@ -9,7 +9,7 @@ A bot for monitoring and fetching new vehicle offers from OtoMoto.pl.\
 ## FEATURES
 - scraping offers for the selected brand and model
 - downloading basic offer data to a CSV file (model, brand, price, publication date and URL)
-- simple CLI interface
+- simple CLI for easy interaction
 - automatic, cyclical checking of offers (time interval can be changed)
 - Saving user configuration
 
