@@ -14,27 +14,40 @@ A bot for monitoring and fetching new vehicle offers from OtoMoto.pl.\
 - Saving user configuration
 
 ## INSTALLATION
+1. Clone the repository:
 ```bash
 git clone https://github.com/Yorick0499/otomoto-bot.git
 cd otomoto-bot
 ```
-It is recommended to create a virtual environment:
+2. Create a virtual environment (recommended):
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-Then you need to install all the required packages:
+3. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
-It is also necessary to install the required browsers after installing Playwright
+4. Install required browsers with Playwright (first-time setup or after Playwright update):
 ```bash
 playwright install
 ```
 
-## REQUIREMENTS
-- Python 3.12.3
+## USAGE
+1. Activate virtual environment:
+```bash
+source .venv/bin/activate
+```
+2. Run the scraper:
+```bash
+python3 main.py
+```
+3. Follow the instructions displayed in the CLI.
 
 ## DISCLAIMER
 This project is for educational purposes only. 
 Please use responsibly and respect the target website's terms of service.
+
+## REQUIREMENTS
+- Python 3.12.3 (or compatible)
+- pip packages from requirements.txt
