@@ -34,3 +34,7 @@ playwright install
 
 ## REQUIREMENTS
 - Python 3.12.3
+
+## DISCLAIMER
+This project is for educational purposes only. 
+Please use responsibly and respect the target website's terms of service.
