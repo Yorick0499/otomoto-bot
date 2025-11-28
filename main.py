@@ -228,4 +228,8 @@ while True:
         df.to_csv("latest_offers.csv",index=False)
     else:
         print(translations[lang]["none"])
-    time.sleep(frequency)
+    try:
+        time.sleep(frequency)
+    except KeyboardInterrupt:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
