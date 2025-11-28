@@ -93,7 +93,7 @@ async def run(playwright: Playwright):
     try:
         response = await page.goto(URL)
         if response:
-            print("Status code: ", response.status)
+            pass
             if response.status == 200:
                 pass
             else:
