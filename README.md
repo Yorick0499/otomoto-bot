@@ -1,5 +1,5 @@
 # OtoMoto Scraper Bot
-![Static Badge](https://img.shields.io/badge/version-0.1.0--dev1-blue)
+![Static Badge](https://img.shields.io/badge/version-0.1.0-blue)
 ![Python](https://img.shields.io/badge/python-3.12.3-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/Yorick0499/otomoto-bot)
 ![Maintenance](https://img.shields.io/maintenance/yes/2025)\
