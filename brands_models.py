@@ -1,0 +1,21 @@
+BRANDS_MODELS = {
+    "audi": ["a1", "a3", "a4", "a5", "a6", "a7", "a8", "q2", "q3", "q5", "q7", "q8", "tt", "r8"],
+    "bmw": ["1", "2", "3", "4", "5", "6", "7", "8", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "z4", "m3", "m4", "m5", "m8"],
+    "mercedes": ["a-class", "b-class", "c-class", "e-class", "s-class", "cla", "cls", "gla", "glb", "glc", "gle", "gls", "g-class", "sl", "slc", "eqc"],
+    "volkswagen": ["golf", "polo", "passat", "tiguan", "touareg", "touran", "t-roc", "arteon", "sharan", "caddy"],
+    "opel": ["astra", "corsa", "insignia", "crossland", "grandland", "mokka", "zafira"],
+    "ford": ["fiesta", "focus", "mondeo", "kuga", "edge", "mustang", "ecosport", "galaxy", "s-max"],
+    "toyota": ["yaris", "corolla", "camry", "auris", "c-hr", "rav4", "highlander", "hilux", "land cruiser"],
+    "skoda": ["fabia", "rapid", "octavia", "superb", "kodiaq", "karoq", "kamiq"],
+    "renault": ["clio", "megane", "talisman", "captur", "kadjar", "scenic", "koleos"],
+    "peugeot": ["208", "2008", "308", "3008", "5008", "508", "partner"],
+    "nissan": ["micra", "juke", "qashqai", "x-trail", "leaf", "navara"],
+    "honda": ["civic", "accord", "cr-v", "hr-v", "jazz"],
+    "mazda": ["2", "3", "6", "cx-3", "cx-30", "cx-5", "mx-5"],
+    "hyundai": ["i10", "i20", "i30", "i40", "kona", "tucson", "santa fe", "bayon"],
+    "kia": ["picanto", "rio", "ceed", "sportage", "sorento", "stonic", "ev6"],
+    "volvo": ["v40", "v60", "v90", "s60", "s90", "xc40", "xc60", "xc90"],
+    "seat": ["ibiza", "leon", "arona", "ateca", "tarraco"],
+    "fiat": ["panda", "500", "tipo", "500x", "500l", "doblo", "punto"],
+    "citroen": ["c1", "c3", "c3 aircross", "c4", "c4 cactus", "c5 aircross", "berlingo"]
+}
