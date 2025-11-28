@@ -1,19 +1,74 @@
 from bs4 import BeautifulSoup
 import asyncio
-from playwright.async_api import async_playwright, Playwright
+from playwright.async_api import async_playwright, Playwright, Error
 import numpy as np
 import pandas as pd
 import time
 import re
 from lang.languages import translations
+from version import __version__
+from brands_models import BRANDS_MODELS
 
 
 lang = "pl"
 debug = True
 extra_debug = False
+title = f"Otomoto Scraper Bot ---- {translations[lang]["coded_by"]}Kacper Rzońca (Yorick0499) ---- {translations[lang]["ver"]}{__version__}"
+line = "=" * len(title)
+print(line)
+print(title)
+print(line)
+while True:
+    try:
+        brand = str(input(translations[lang]["user_input_brand"])).lower()
+        if brand not in BRANDS_MODELS:
+            print(translations[lang]["brand_error"])
+            continue
+        else:
+            break
+    except KeyboardInterrupt:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
+    except EOFError:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
+while True:
+    try:
+        model = str(input(translations[lang]["user_input_model"])).lower()
+        if model not in BRANDS_MODELS[brand]:
+            print(translations[lang]["model_error"])
+            continue
+        else:
+            break
+    except KeyboardInterrupt:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
+    except EOFError:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
+while True:
+    try:
+        frequency = int(input(translations[lang]["frequency"]))
+        if frequency == 0:
+            print(translations[lang]["time_int_r"])
+            continue
+        elif frequency > 0 and frequency < 60:
+            print(translations[lang]["time_int_60"])
+            continue
+        elif frequency < 0:
+            print(translations[lang]["negative_error"])
+            continue
+        else:
+            break
+    except ValueError:
+        print(translations[lang]["numeric_error"])
+    except KeyboardInterrupt:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
+    except EOFError:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
 
-brand = str(input(translations[lang]["user_input_brand"])).lower()
-model = str(input(translations[lang]["user_input_model"])).lower()
 
 URL = f"https://www.otomoto.pl/osobowe/{brand}/{model}/dolnoslaskie?search%5Blat%5D=51.232&search%5Blon%5D=16.907&search%5Border%5D=created_at_first%3Adesc"
 
@@ -35,7 +90,19 @@ async def run(playwright: Playwright):
     time.sleep(5)
     if debug:
         print(translations[lang]["enter"])
-    await page.goto(URL)
+    try:
+        response = await page.goto(URL)
+        if response:
+            print("Status code: ", response.status)
+            if response.status == 200:
+                pass
+            else:
+                print(translations[lang]["http_error"], response.status)
+        else:
+            print(translations[lang]["server_error"])
+    except Error as e:
+        print(translations[lang]["browser_error"])
+        exit(0)
     print(translations[lang]["simulating"])
     time.sleep(np.random.uniform(2,5))
     await page.click("#onetrust-accept-btn-handler")
@@ -99,7 +166,11 @@ def find_url():
 
 
 while True:
-    html = asyncio.run(main())
+    try:
+        html = asyncio.run(main())
+    except KeyboardInterrupt:
+        print(f"\n{translations[lang]["exit"]}")
+        exit(0)
     if debug:
         print(translations[lang]["parsing"])
     soup = BeautifulSoup(html,'html.parser')
@@ -157,4 +228,4 @@ while True:
         df.to_csv("latest_offers.csv",index=False)
     else:
         print(translations[lang]["none"])
-    time.sleep(600)
+    time.sleep(frequency)
