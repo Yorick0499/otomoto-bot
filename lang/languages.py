@@ -1,7 +1,10 @@
 translations = {
     "en": {
+        "ver": "version: ",
+        "coded_by": "Coded by: ",
         "user_input_brand": "Enter car's brand: ",
         "user_input_model": "Enter model: ",
+        "frequency": "Frequency of checking new offers (in seconds): ",
         "enter": "Entering website...",
         "simulating": "Simulating user actions...",
         "fetching": "Fetching data...",
@@ -9,11 +12,24 @@ translations = {
         "extract": "Extracting data...",
         "cleanup": "Cleanup...",
         "new": "Detected new offers!",
-        "none": "No new offers."
+        "none": "No new offers.",
+        "brand_error": "Incorrect brand.",
+        "model_error": "Incorrect model.",
+        "time_int_r": "Time inerval required.",
+        "time_int_60": "The time interval should be at least 60 seconds.",
+        "negative_error": "The value cannot be negative.",
+        "numeric_error": "Only numeric value is allowed.",
+        "http_error": "HTTP error:",
+        "server_error": "No response from server.",
+        "browser_error": "Browser error.",
+        "exit": "Operation interrupted.",
     },
     "pl": {
+        "ver": "wersja: ",
+        "coded_by": "Stworzony przez: ",
         "user_input_brand": "Wpisz markę samochodu: ",
         "user_input_model": "Wpisz model samochodu: ",
+        "frequency": "Częstotliwość sprawdzania nowych ofert (w sekundach): ",
         "enter": "Uzyskiwanie dostępu...",
         "simulating": "Symulowanie akcji użytkownika...",
         "fetching": "Pobieranie danych...",
@@ -21,6 +37,16 @@ translations = {
         "extract": "Ekstrakcja danych...",
         "cleanup": "Czyszczenie sesji...",
         "new": "Znaleziono nowe oferty!",
-        "none": "Brak nowych ofert."
+        "none": "Brak nowych ofert.",
+        "brand_error": "Marka niepoprawna.",
+        "model_error": "Model niepoprawny.",
+        "time_int_r": "Interwał czasowy jest wymagany.",
+        "time_int_60": "Interwał czasowy musi wynosić co najmniej 60 sekund.",
+        "negative_error": "Wartość liczbowa nie może być ujemna.",
+        "numeric_error": "Dopuszczalna jest wyłącznie wartość liczbowa.",
+        "http_error": "Błąd HTTP:",
+        "server_error": "Brak odpowiedzi od serwera.",
+        "browser_error": "Błąd przeglądarki",
+        "exit": "Przerwano działanie."
     }
 }
