@@ -133,32 +133,32 @@ async def main():
     
 def find_title():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-        div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
+        div = section.find("div", class_="ooa-41cm2x e1s1gr051")
         if not div:
             continue
-        h2 = div.find("h2", class_="etydmma0 ooa-ezpr21")
+        h2 = div.find("h2", class_="e123dwbo0 ooa-ezpr21")
         a = h2.find("a")
         titles.append(a.get("aria-label"))
 
 def find_price():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-        h3 = section.find("h3", class_="efzkujb1 ooa-3ewd90")
+        h3 = section.find("h3", class_="eg88ra81 ooa-3ewd90")
         if not h3:
             continue
         prices.append(h3.get_text(strip=True))
 
 def publication_date():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-        div = section.find("section", class_="ooa-ljs66p e1fi2t0p0")
+        div = section.find("div", class_="ooa-d3dp2q evakns50")
         if not div:
             continue
-        ul = div.find("ul", class_="ooa-1o0axny e1a9azt30")
+        ul = div.find("ul", class_="ooa-1o0axny eipsc690")
         p = ul.find_all("p")[1]
         publication_dates.append(p.get_text(strip=True))
 
 def find_url():
     for section in soup.find_all("article", attrs={"data-orientation": "horizontal"}):
-        div = section.find("div", class_="ooa-3ux3i6 e8qbg6l0")
+        div = section.find("div", class_="ooa-41cm2x e1s1gr051")
         if not div:
             continue
         a = div.find("a")
