@@ -1,8 +1,8 @@
 # OtoMoto Scraper Bot
-![Release](https://img.shields.io/github/v/release/Yorick0499/otomoto-bot?color=blue)
-![Python](https://img.shields.io/badge/python-3.12.3-blue)
-![Last Commit](https://img.shields.io/github/last-commit/Yorick0499/otomoto-bot)
-![Maintenance](https://img.shields.io/maintenance/yes/2025)\
+![Release](https://img.shields.io/github/v/release/Yorick0499/otomoto-bot?color=blue&style=for-the-badge)
+![Python](https://img.shields.io/badge/python-3.12.3-blue?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/Yorick0499/otomoto-bot?style=for-the-badge)
+![Maintenance](https://img.shields.io/maintenance/yes/2026?style=for-the-badge)\
 A bot for monitoring and fetching new vehicle offers from OtoMoto.pl.\
 *This project is currently under development - some features may be unimplemented or experimental.*
 
