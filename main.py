@@ -8,21 +8,50 @@ import re
 from lang.languages import translations
 from version import __version__
 from brands_models import BRANDS_MODELS
-
+from rich.console import Console
+from rich.panel import Panel
+import os
 
 lang = "pl"
 debug = True
 extra_debug = False
-title = f"Otomoto Scraper Bot ---- {translations[lang]["coded_by"]}Kacper Rzońca (Yorick0499) ---- {translations[lang]["ver"]}{__version__}"
-line = "=" * len(title)
-print(line)
-print(title)
-print(line)
+os.system('clear')
+
+
+console = Console()
+
+otomoto_ascii = """
+                                                                                                                                           
+ ,-----.   ,--.                            ,--.              ,---.                                                ,-----.           ,--.   
+'  .-.  ',-'  '-. ,---. ,--,--,--. ,---. ,-'  '-. ,---.     '   .-'  ,---.,--.--. ,--,--. ,---.  ,---. ,--.--.    |  |) /_  ,---. ,-'  '-. 
+|  | |  |'-.  .-'| .-. ||        || .-. |'-.  .-'| .-. |    `.  `-. | .--'|  .--'' ,-.  || .-. || .-. :|  .--'    |  .-.  \| .-. |'-.  .-' 
+'  '-'  '  |  |  ' '-' '|  |  |  |' '-' '  |  |  ' '-' '    .-'    |\ `--.|  |   \ '-'  || '-' '\   --.|  |       |  '--' /' '-' '  |  |   
+ `-----'   `--'   `---' `--`--`--' `---'   `--'   `---'     `-----'  `---'`--'    `--`--'|  |-'  `----'`--'       `------'  `---'   `--'   
+                                                                                         `--'                                              
+
+"""
+
+version_text = f"{translations[lang]["ver"]}[yellow]{__version__:>}[/]"
+info_text = f"[bold white]{translations[lang]["coded_by"]}Kacper Rzońca (Yorick0499)[/] {version_text:>{110}}"
+
+full_menu = f"[bold gradient(purple, cyan)] {otomoto_ascii} [/]\n"\
+            f"{info_text}"
+
+
+console.print(
+    Panel(
+        full_menu,
+        border_style="cyan",
+        expand=False
+    )
+)
+
+
 while True:
     try:
         brand = str(input(translations[lang]["user_input_brand"])).lower()
         if brand not in BRANDS_MODELS:
-            print(translations[lang]["brand_error"])
+            console.print(f"[red]{translations[lang]["brand_error"]}[/]")
             continue
         else:
             break
@@ -72,11 +101,6 @@ while True:
 
 URL = f"https://www.otomoto.pl/osobowe/{brand}/{model}/dolnoslaskie?search%5Blat%5D=51.232&search%5Blon%5D=16.907&search%5Border%5D=created_at_first%3Adesc"
 
-titles = []
-prices = []
-publication_dates = []
-urls = []
-
 
 async def run(playwright: Playwright):
     browser = await playwright.firefox.launch(headless=False)
@@ -89,7 +113,7 @@ async def run(playwright: Playwright):
     page = await context.new_page()
     time.sleep(5)
     if debug:
-        print(translations[lang]["enter"])
+        console.print(f"[cyan]{translations[lang]["enter"]}[/]")
     try:
         response = await page.goto(URL)
         if response:
@@ -103,7 +127,7 @@ async def run(playwright: Playwright):
     except Error as e:
         print(translations[lang]["browser_error"])
         exit(0)
-    print(translations[lang]["simulating"])
+    console.print(f"[cyan]{translations[lang]["simulating"]}[/]")
     time.sleep(np.random.uniform(2,5))
     await page.click("#onetrust-accept-btn-handler")
     time.sleep(np.random.uniform(1,1.5))
@@ -120,7 +144,7 @@ async def run(playwright: Playwright):
         time.sleep(np.random.uniform(0.2,1))
     time.sleep(np.random.uniform(5,20))
     if debug:
-        print(translations[lang]["fetching"])
+        console.print(f"[cyan]{translations[lang]["fetching"]}[/]")
     html = await page.content()
     await browser.close()
     
@@ -166,17 +190,21 @@ def find_url():
 
 
 while True:
+    titles = []
+    prices = []
+    publication_dates = []
+    urls = []
     try:
         html = asyncio.run(main())
     except KeyboardInterrupt:
         print(f"\n{translations[lang]["exit"]}")
         exit(0)
     if debug:
-        print(translations[lang]["parsing"])
+        console.print(f"[cyan]{translations[lang]["parsing"]}[/]")
     soup = BeautifulSoup(html,'html.parser')
 
     if debug:
-        print(translations[lang]["extract"])
+        console.print(f"[cyan]{translations[lang]["extract"]}[/]")
     find_title()
     find_price()
     publication_date()
@@ -222,12 +250,15 @@ while True:
     df_local = pd.read_csv("latest_offers.csv")
     equal = df["URL"].equals(df_local["URL"])
 
+    diff_out = df[~df["URL"].isin(df_local["URL"])]
+
     if equal == False:
         if debug:
-            print(translations[lang]["new"])
+            console.print(f"[bold green]{translations[lang]["new"]}[/]")
+            console.print(f'[green] {diff_out} [/green]')
         df.to_csv("latest_offers.csv",index=False)
     else:
-        print(translations[lang]["none"])
+        console.print(f"[bold yellow]{translations[lang]["none"]}[/]")
     try:
         time.sleep(frequency)
     except KeyboardInterrupt:
